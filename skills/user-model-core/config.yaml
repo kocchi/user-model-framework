@@ -1,0 +1,18 @@
+# User Model Core Configuration
+# Customize these paths for your environment
+
+paths:
+  user_model: "~/.agent/data/user_model.yaml"
+  schema: "~/.agent/schema/user_model_schema.json"
+  changelog: "~/.agent/data/CHANGELOG.md"
+  template: "~/.agent/templates/user_model.template.yaml"
+
+# Version tracking
+versioning:
+  auto_increment: true
+  changelog_format: "keep-a-changelog"  # https://keepachangelog.com/
+
+# Validation
+validation:
+  on_save: true
+  strict_mode: false  # If true, reject unknown fields

@@ -1,0 +1,96 @@
+# user_model.yaml - Personal Agent Configuration Template
+# Copy this to ~/.agent/data/user_model.yaml and customize
+version: "1.0"
+owner:
+  display_name: ""           # Your name
+  timezone: "Asia/Tokyo"     # Your timezone
+
+stable:
+  north_star:
+    long_term_goals: []      # What you're working toward
+    success_definition: []   # How you know you're done
+    non_negotiables: []      # What you won't compromise on
+    non_negotiables_scope:
+      enforce_on: []         # Contexts where non_negotiables apply strictly
+      relax_on: []           # Contexts where they can be relaxed
+    anti_goals: []           # What you want to avoid becoming
+
+  decision_engine:
+    values: []               # Your core values
+    # Example:
+    # - name: "検査可能性"
+    #   meaning: "合意できる抽象度で検証できる状態を作る"
+    #   priority: "must"  # must | should | could
+    quality_bar:
+      pass_conditions: []    # What makes output acceptable
+      common_failures: []    # What typically goes wrong
+      fix_order: []          # Priority order for fixes
+    tradeoff_policy:
+      speed_vs_depth: "balance"           # speed | depth | balance
+      abstract_vs_concrete: "iterate"     # decide_then_build | iterate
+      autonomy_vs_alignment: "alignment_then_autonomy"
+
+  thinking_os:
+    mental_models: []        # Frameworks you use (e.g., "システム思考", "OKR")
+    question_style:
+      prefer: []             # Types of questions you like
+      avoid: []              # Types of questions to avoid
+    collaboration_style:
+      default_mode: "first_draft_then_critique"
+      review_focus: []       # What to focus on in reviews
+
+  communication_prefs:
+    language: "ja"           # Primary language
+    tone: "conversational_concise"
+    formatting:
+      prefer: []             # Preferred formats (e.g., "箇条書き", "チェックリスト")
+      avoid: []              # Formats to avoid
+    interaction_contract:
+      assistant_can_decide_broadly: true
+      assistant_should_point_out_and_fix: true
+      clarify_only_if_blocked: true
+
+  privacy_and_boundaries:
+    store_allowed: []        # What can be stored
+    store_avoid: []          # What should not be stored
+    redaction_rules: []      # How to redact sensitive info
+
+mutable:
+  current_roles: []          # Your current roles
+  current_projects: []       # Active projects
+  # Example:
+  # - name: "Project Name"
+  #   objective: "What you're trying to achieve"
+  #   constraints: []
+  #   current_state: "Where you are now"
+  #   next_actions: []
+  #   review_at: "2026-02-01"
+  current_focus_topics: []
+  constraints_now:
+    time: ""
+    budget: ""
+    energy: ""
+  review_at: "2026-02-01"    # When to review this section
+
+learning_log:
+  corrections_that_worked: []
+  # Example:
+  # - context: "Situation"
+  #   issue: "What went wrong"
+  #   intervention: "What fixed it"
+  #   outcome: "Result"
+  #   confidence: 0.8
+  #   date: "2026-01-22"
+  common_pitfalls: []
+  calibration_notes: []
+
+agent_runtime_policy:
+  default_actions: []        # What agent should do by default
+  risk_handling:
+    high_stakes_domains: []  # Domains requiring extra caution
+    rules: []                # How to handle high-stakes situations
+  memory_hygiene:
+    record_fields: ["source", "date", "confidence", "review_at"]
+    decay_policy:
+      mutable_days: 30
+      stable_review_days: 180

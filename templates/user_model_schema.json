@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UserModel",
+  "type": "object",
+  "required": ["version", "owner", "stable", "mutable", "learning_log", "agent_runtime_policy"],
+  "properties": {
+    "version": { "type": "string" },
+    "owner": {
+      "type": "object",
+      "required": ["timezone"],
+      "properties": {
+        "display_name": { "type": "string" },
+        "timezone": { "type": "string" }
+      }
+    },
+    "stable": {
+      "type": "object",
+      "required": ["north_star", "decision_engine", "thinking_os", "communication_prefs", "privacy_and_boundaries"],
+      "properties": {
+        "north_star": {
+          "type": "object",
+          "properties": {
+            "long_term_goals": { "type": "array", "items": { "type": "string" } },
+            "success_definition": { "type": "array", "items": { "type": "string" } },
+            "non_negotiables": { "type": "array", "items": { "type": "string" } },
+            "non_negotiables_scope": {
+              "type": "object",
+              "properties": {
+                "enforce_on": { "type": "array", "items": { "type": "string" } },
+                "relax_on": { "type": "array", "items": { "type": "string" } }
+              }
+            },
+            "anti_goals": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "decision_engine": {
+          "type": "object",
+          "properties": {
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name", "meaning", "priority"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "meaning": { "type": "string" },
+                  "priority": { "type": "string", "enum": ["must", "should", "could"] }
+                }
+              }
+            },
+            "quality_bar": {
+              "type": "object",
+              "properties": {
+                "pass_conditions": { "type": "array", "items": { "type": "string" } },
+                "common_failures": { "type": "array", "items": { "type": "string" } },
+                "fix_order": { "type": "array", "items": { "type": "string" } }
+              }
+            },
+            "tradeoff_policy": {
+              "type": "object",
+              "properties": {
+                "speed_vs_depth": { "type": "string", "enum": ["speed", "depth", "balance"] },
+                "abstract_vs_concrete": { "type": "string", "enum": ["decide_then_build", "iterate"] },
+                "autonomy_vs_alignment": { "type": "string", "enum": ["autonomy_first", "alignment_then_autonomy"] }
+              }
+            }
+          }
+        },
+        "thinking_os": {
+          "type": "object",
+          "properties": {
+            "mental_models": { "type": "array", "items": { "type": "string" } },
+            "question_style": {
+              "type": "object",
+              "properties": {
+                "prefer": { "type": "array", "items": { "type": "string" } },
+                "avoid": { "type": "array", "items": { "type": "string" } }
+              }
+            },
+            "collaboration_style": {
+              "type": "object",
+              "properties": {
+                "default_mode": { "type": "string" },
+                "review_focus": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          }
+        },
+        "communication_prefs": {
+          "type": "object",
+          "properties": {
+            "language": { "type": "string" },
+            "tone": { "type": "string" },
+            "formatting": {
+              "type": "object",
+              "properties": {
+                "prefer": { "type": "array", "items": { "type": "string" } },
+                "avoid": { "type": "array", "items": { "type": "string" } }
+              }
+            },
+            "interaction_contract": {
+              "type": "object",
+              "properties": {
+                "assistant_can_decide_broadly": { "type": "boolean" },
+                "assistant_should_point_out_and_fix": { "type": "boolean" },
+                "clarify_only_if_blocked": { "type": "boolean" }
+              }
+            }
+          }
+        },
+        "privacy_and_boundaries": {
+          "type": "object",
+          "properties": {
+            "store_allowed": { "type": "array", "items": { "type": "string" } },
+            "store_avoid": { "type": "array", "items": { "type": "string" } },
+            "redaction_rules": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "mutable": {
+      "type": "object",
+      "properties": {
+        "current_roles": { "type": "array", "items": { "type": "string" } },
+        "current_projects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "objective": { "type": "string" },
+              "constraints": { "type": "array", "items": { "type": "string" } },
+              "current_state": { "type": "string" },
+              "next_actions": { "type": "array", "items": { "type": "string" } },
+              "review_at": { "type": "string" }
+            }
+          }
+        },
+        "current_focus_topics": { "type": "array", "items": { "type": "string" } },
+        "constraints_now": {
+          "type": "object",
+          "properties": {
+            "time": { "type": "string" },
+            "budget": { "type": "string" },
+            "energy": { "type": "string" }
+          }
+        },
+        "review_at": { "type": "string" }
+      }
+    },
+    "learning_log": {
+      "type": "object",
+      "properties": {
+        "corrections_that_worked": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "context": { "type": "string" },
+              "issue": { "type": "string" },
+              "intervention": { "type": "string" },
+              "outcome": { "type": "string" },
+              "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+              "date": { "type": "string" }
+            }
+          }
+        },
+        "common_pitfalls": { "type": "array", "items": { "type": "string" } },
+        "calibration_notes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "agent_runtime_policy": {
+      "type": "object",
+      "properties": {
+        "default_actions": { "type": "array", "items": { "type": "string" } },
+        "risk_handling": {
+          "type": "object",
+          "properties": {
+            "high_stakes_domains": { "type": "array", "items": { "type": "string" } },
+            "rules": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "memory_hygiene": {
+          "type": "object",
+          "properties": {
+            "record_fields": { "type": "array", "items": { "type": "string" } },
+            "decay_policy": {
+              "type": "object",
+              "properties": {
+                "mutable_days": { "type": "integer" },
+                "stable_review_days": { "type": "integer" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
