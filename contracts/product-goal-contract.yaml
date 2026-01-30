@@ -1,0 +1,63 @@
+# Product Goal Contract for user-model-framework
+# Created: 2026-01-30
+
+product-goal-contract:
+  id: "PG-2026-Q1-user-model-framework"
+  
+  value: |
+    AI エージェントがユーザーを誰よりも深く理解する
+    - 表層的な好みだけでなく、深層構造（メンタルモデル、認知パターン）まで捉える
+    - 会話から自己進化し、仮説検証ループで理解を深める
+    - 本人すら自覚しにくいレイヤー（シャドウ、コア・ビリーフ）を可視化
+  
+  kill_criteria:
+    - "3ヶ月後に「AI が自分を理解してくれない」が 50% 超"
+    - "deep_self_structure の活用率が 20% 未満"
+    - "進化提案の採用率が 30% 未満"
+  
+  success_metrics:
+    - name: "進化提案の採用率"
+      target: "70% 以上"
+      current: null
+    - name: "深層分析の満足度"
+      target: "4/5 以上"
+      current: null
+    - name: "プラグイン利用継続率"
+      target: "80% 以上"
+      current: null
+  
+  hypotheses:
+    - id: H1
+      statement: "7層の深層分析がユーザーの自己理解を促進する"
+      risk_type: "value"
+      confidence: "medium"
+      status: "unvalidated"
+    - id: H2
+      statement: "仮説検証ループ（agent_runtime_policy）が理解精度を上げる"
+      risk_type: "usability"
+      confidence: "medium"
+      status: "unvalidated"
+    - id: H3
+      statement: "スキルベースのモジュール設計が再利用性を高める"
+      risk_type: "feasibility"
+      confidence: "high"
+      status: "validated"
+      note: "agent-harness での実績あり"
+  
+  stakeholders:
+    - name: "Yuki（メンテナー）"
+      role: "approver"
+      commitment: "このビジョンで user-model-framework を作る"
+      committed_at: "2026-01-30"
+    - name: "ユーザー"
+      role: "informed"
+      commitment: "このフレームワークで自己理解を深める"
+      committed_at: null
+  
+  iteration:
+    planned: 4  # 四半期で4回のスプリント
+    current: 1  # 初回スプリント
+    trigger: "仮説の検証結果により方向転換が必要な場合"
+  
+  created_at: "2026-01-30"
+  updated_at: "2026-01-30"

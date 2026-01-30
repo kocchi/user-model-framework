@@ -1,0 +1,82 @@
+# Slice Contract: user-model-deep-analysis スキルの完成
+# Created: 2026-01-30
+
+slice-contract:
+  id: "SLC-20260130-deep-analysis"
+  
+  parent: "PG-2026-Q1-user-model-framework"
+  
+  feature:
+    name: "7層深層自己構造分析スキル"
+    description: "ユーザーの深層構造（シャドウ、コア・ビリーフ、ライフスクリプト等）を分析し可視化するスキル"
+  
+  slices:
+    - id: S1
+      name: "既存変更のコミット"
+      description: "未コミットの deep-analysis スキルと関連ファイルを整理してコミット"
+      size: small
+      classification: known
+      reason: "変更内容が明確（git status で確認済み）"
+      verify_timing: "実装後"
+      files:
+        - "skills/user-model-deep-analysis/SKILL.md"
+        - "README.md"
+        - "schema/user_model_schema.json"
+        - "templates/user_model.template.yaml"
+        - "templates/user_model_schema.json"
+      
+    - id: S2
+      name: "evolve スキルの更新"
+      description: "user-model-evolve スキルの変更をコミット"
+      size: small
+      classification: known
+      reason: "変更内容が明確"
+      verify_timing: "実装後"
+      files:
+        - "skills/user-model-evolve/SKILL.md"
+      
+    - id: S3
+      name: "動作検証"
+      description: "deep-analysis スキルの動作を検証"
+      size: small
+      classification: unknown
+      reason: "実際に使ってみないと問題が見つからない可能性"
+      verify_timing: "実装前"
+      verification:
+        method: "実際に deep-analysis を実行してみる"
+        success_criteria:
+          - "7層の分析結果が出力される"
+          - "user_model.yaml に deep_self_structure が追記される"
+  
+  order:
+    - slice_id: S1
+      priority: 1
+      rationale: "まず既存変更を整理"
+    - slice_id: S2
+      priority: 2
+      rationale: "関連スキルの更新"
+    - slice_id: S3
+      priority: 3
+      rationale: "未知の検証を最後に"
+  
+  classification_rationale: |
+    S1, S2 は既存の未コミット変更の整理なので「既知」。
+    S3 は実際に動かしてみないと問題が見つからない可能性があるため「未知」。
+    先に「既知」を片付けてから「未知」を検証するアプローチ。
+  
+  risks:
+    - slice_id: S1
+      risk: "変更が壊れている可能性"
+      mitigation: "コミット前にファイル内容を確認"
+    - slice_id: S3
+      risk: "deep-analysis の出力が期待と異なる"
+      mitigation: "小さな修正で対応、大きな問題は次スプリントに延期"
+  
+  stakeholders:
+    - name: "Yuki"
+      role: "approver"
+  
+  status: "in_progress"
+  
+  created_at: "2026-01-30"
+  updated_at: "2026-01-30"
