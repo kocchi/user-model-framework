@@ -31,7 +31,31 @@ stable:
       autonomy_vs_alignment: "alignment_then_autonomy"
 
   thinking_os:
-    mental_models: []        # Frameworks you use (e.g., "システム思考", "OKR")
+    mental_models: []
+    # Example (structured):
+    # - name: "システム思考"
+    #   meaning_to_user: "全体の依存関係を把握してから動く"
+    #   trigger_contexts: ["設計判断", "障害分析"]
+    #   application_pattern: "入力→処理→出力→フィードバックで整理"
+    #   exceptions: ["緊急対応時は局所最適を許容"]
+    #   origin: "過去のインシデント対応で学んだ"
+
+    cognitive_patterns:
+      reasoning_defaults: []
+      # Example:
+      # - pattern: "選択肢を減点法で絞り込む"
+      #   example: "3案あったらまず欠点を見る"
+      #   confidence: 0.8
+      attention_biases: []
+      # Example: ["具体例がないと信用しない", "抽象度が高すぎると警戒"]
+      decision_heuristics: []
+      # Example:
+      # - context: "選択肢が多い"
+      #   heuristic: "まず3つに絞る"
+      #   confidence: 0.7
+      cognitive_load_triggers: []
+      # Example: ["選択肢が5つ以上", "曖昧な指示"]
+
     question_style:
       prefer: []             # Types of questions you like
       avoid: []              # Types of questions to avoid
@@ -94,3 +118,116 @@ agent_runtime_policy:
     decay_policy:
       mutable_days: 30
       stable_review_days: 180
+
+  # === 深層理解のための推論エンジン ===
+  hypotheses: []
+  # Agent が立てた仮説（検証待ち）
+  # Example:
+  # - hypothesis: "抽象度が高い提案を嫌うのは、過去に曖昧な計画で失敗したから"
+  #   evidence: ["具体例を求めることが多い", "実装詳細を先に聞く"]
+  #   counter_evidence: []
+  #   confidence: 0.6
+  #   status: "pending"  # pending | verified | refuted | refined
+  #   created_at: "2026-01-23"
+
+  behavioral_observations: []
+  # ユーザー行動の観察記録（仮説生成の元データ）
+  # Example:
+  # - context: "3案提示"
+  #   action: "案Bを即却下"
+  #   inferred_reason: "抽象度が高すぎた？"
+  #   date: "2026-01-23"
+
+# === 深層自己構造（7層分析の結果） ===
+# user-model-deep-analysis スキルで生成・更新される
+deep_self_structure:
+  last_analysis:
+    date: ""
+    source_summary: ""
+
+  # Layer 1: 顕在アイデンティティ（自覚している自己像）
+  layer1_manifest_identity:
+    self_perceived_traits: []
+    # Example: ["思考を設計する人", "前提を疑う人"]
+    expressed_thinking_style: ""
+    # Example: "冷静・メタ認知が高い・感情に流されない"
+    self_image: ""
+    # Example: "構造を扱う合理的思考者"
+    confidence: 0
+
+  # Layer 2: シャドウ（否認された自己）
+  layer2_shadow:
+    avoided_emotions: []
+    # Example: ["理解されないことへの警戒", "存在そのものを信頼されたい欲求"]
+    denied_but_visible: []
+    # Example: ["論理ではなく『この人が言うなら』で任されたい"]
+    defense_mechanisms: []
+    # Example: ["感情を構造・理論に即座に変換", "個人的な話を普遍化"]
+    confidence: 0
+
+  # Layer 3: 行動パターン（反復構造）
+  layer3_behavioral_patterns:
+    decision_habits: []
+    # Example: ["違和感を感知→構造化→提示→理解されない→摩耗"]
+    stuck_loops: []
+    # Example: ["自分だけが先に進み、孤立感が蓄積"]
+    result_attractors: []
+    # Example: ["また同じ場所に戻ってきた」という既視感"]
+    confidence: 0
+
+  # Layer 4: 感情トリガー
+  layer4_emotional_triggers:
+    reactive_events: []
+    # Example: ["表層的な合意", "雑な要約", "本質に踏み込まない態度"]
+    negative_emotion_conditions:
+      anger: []
+      anxiety: []
+      impatience: []
+    emotion_hijack_patterns: []
+    # Example: ["失望＞怒り＞虚無の順で処理", "怒りは外に出ない"]
+    confidence: 0
+
+  # Layer 5: コア・ビリーフ（根源的信念）
+  layer5_core_beliefs:
+    world_assumptions: []
+    # Example: ["世界は、構造を見抜いた者にしか動かせない"]
+    self_imperatives: []
+    # Example: ["理解されないまま動くことは、暴力に近い"]
+    other_assumptions: []
+    # Example: ["周囲の速度不足を補う役割を引き受けてきた"]
+    formation_hypotheses: []
+    # Example: ["早い段階から『分かっている側』に立たされてきた"]
+    confidence: 0
+
+  # Layer 6: 内的矛盾と自己欺瞞
+  layer6_internal_contradictions:
+    say_do_gaps: []
+    # Example: ["依存を生まない距離で関わりたい vs 深く分かっている前提で任されたい"]
+    ideal_vs_real: []
+    # Example: ["感情に左右されない vs 感情を変換する能力が高いだけ"]
+    self_deceptions: []
+    confidence: 0
+
+  # Layer 7: 人生のライフスクリプト
+  layer7_life_script:
+    unconscious_patterns: []
+    # Example: ["混乱した場に呼ばれる→構造を示す→感謝される→引き継がれない→次の混乱へ"]
+    recurring_roles: []
+    # Example: ["構造を示す人", "理解されない先駆者"]
+    projected_future: ""
+    # Example: "抽象度だけが上がり、実装層との断絶が進む"
+    confidence: 0
+
+  # 総括
+  synthesis:
+    greatest_strength: ""
+    # Example: "思考の初速を、構造として置けること"
+    greatest_blind_spot: ""
+    # Example: "理解されない前提を、すでに受け入れてしまっていること"
+    critical_growth_point: ""
+    # Example: "構造を置く人から、構造が継承される場を設計する人への移行"
+
+  # 検証状態
+  verification_status:
+    verified_layers: []      # ユーザーが確認済みの層（1-7）
+    disputed_points: []      # ユーザーが異議を唱えた点

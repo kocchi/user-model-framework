@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "UserModel",
   "type": "object",
-  "required": ["version", "owner", "stable", "mutable", "learning_log", "agent_runtime_policy"],
+  "required": ["version", "owner", "stable", "mutable", "learning_log", "agent_runtime_policy", "deep_self_structure"],
   "properties": {
     "version": { "type": "string" },
     "owner": {
@@ -69,7 +69,61 @@
         "thinking_os": {
           "type": "object",
           "properties": {
-            "mental_models": { "type": "array", "items": { "type": "string" } },
+            "mental_models": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "meaning_to_user": { "type": "string", "description": "このユーザーにとって何を意味するか" },
+                  "trigger_contexts": { "type": "array", "items": { "type": "string" }, "description": "どういう場面で発火するか" },
+                  "application_pattern": { "type": "string", "description": "どう適用するか" },
+                  "exceptions": { "type": "array", "items": { "type": "string" }, "description": "適用しない例外ケース" },
+                  "origin": { "type": "string", "description": "どこから来たか（原体験、学習元）" }
+                }
+              }
+            },
+            "cognitive_patterns": {
+              "type": "object",
+              "description": "本人すら自覚しにくい認知パターン",
+              "properties": {
+                "reasoning_defaults": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "pattern": { "type": "string" },
+                      "example": { "type": "string" },
+                      "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+                    }
+                  },
+                  "description": "デフォルトの推論パターン"
+                },
+                "attention_biases": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "注意が向きやすいもの・向きにくいもの"
+                },
+                "decision_heuristics": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "context": { "type": "string" },
+                      "heuristic": { "type": "string" },
+                      "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+                    }
+                  },
+                  "description": "意思決定の近道"
+                },
+                "cognitive_load_triggers": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "description": "認知負荷が高くなるパターン"
+                }
+              }
+            },
             "question_style": {
               "type": "object",
               "properties": {
@@ -191,6 +245,144 @@
                 "stable_review_days": { "type": "integer" }
               }
             }
+          }
+        },
+        "hypotheses": {
+          "type": "array",
+          "description": "Agent が立てた仮説（検証待ち）",
+          "items": {
+            "type": "object",
+            "required": ["hypothesis", "confidence"],
+            "properties": {
+              "hypothesis": { "type": "string" },
+              "evidence": { "type": "array", "items": { "type": "string" } },
+              "counter_evidence": { "type": "array", "items": { "type": "string" } },
+              "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+              "status": { "type": "string", "enum": ["pending", "verified", "refuted", "refined"] },
+              "created_at": { "type": "string" },
+              "verified_at": { "type": "string" }
+            }
+          }
+        },
+        "behavioral_observations": {
+          "type": "array",
+          "description": "ユーザー行動の観察記録（仮説生成の元データ）",
+          "items": {
+            "type": "object",
+            "properties": {
+              "context": { "type": "string" },
+              "action": { "type": "string", "description": "何を選んだか / 却下したか" },
+              "inferred_reason": { "type": "string" },
+              "date": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "deep_self_structure": {
+      "type": "object",
+      "description": "7層の深層自己構造分析（会話履歴から導出）",
+      "properties": {
+        "last_analysis": {
+          "type": "object",
+          "properties": {
+            "date": { "type": "string" },
+            "source_summary": { "type": "string", "description": "分析の元になった会話の概要" }
+          }
+        },
+        "layer1_manifest_identity": {
+          "type": "object",
+          "description": "顕在アイデンティティ（自覚している自己像）",
+          "properties": {
+            "self_perceived_traits": { "type": "array", "items": { "type": "string" }, "description": "自覚している性格・価値観" },
+            "expressed_thinking_style": { "type": "string", "description": "表向きに見せている思考スタイル" },
+            "self_image": { "type": "string", "description": "「こういう人間だ」と思っている像" },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "layer2_shadow": {
+          "type": "object",
+          "description": "シャドウ（否認された自己）",
+          "properties": {
+            "avoided_emotions": { "type": "array", "items": { "type": "string" }, "description": "無意識に避けている感情や欲求" },
+            "denied_but_visible": { "type": "array", "items": { "type": "string" }, "description": "認めたくないが行動に現れている傾向" },
+            "defense_mechanisms": { "type": "array", "items": { "type": "string" }, "description": "抑圧・合理化・正当化のパターン" },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "layer3_behavioral_patterns": {
+          "type": "object",
+          "description": "行動パターン（反復構造）",
+          "properties": {
+            "decision_habits": { "type": "array", "items": { "type": "string" }, "description": "繰り返し現れる意思決定の癖" },
+            "stuck_loops": { "type": "array", "items": { "type": "string" }, "description": "失敗や停滞が起きやすい思考ループ" },
+            "result_attractors": { "type": "array", "items": { "type": "string" }, "description": "同じ結果を招きやすい行動構造" },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "layer4_emotional_triggers": {
+          "type": "object",
+          "description": "感情トリガー",
+          "properties": {
+            "reactive_events": { "type": "array", "items": { "type": "string" }, "description": "強く反応する出来事や言葉" },
+            "negative_emotion_conditions": {
+              "type": "object",
+              "properties": {
+                "anger": { "type": "array", "items": { "type": "string" } },
+                "anxiety": { "type": "array", "items": { "type": "string" } },
+                "impatience": { "type": "array", "items": { "type": "string" } }
+              }
+            },
+            "emotion_hijack_patterns": { "type": "array", "items": { "type": "string" }, "description": "感情が思考を支配する瞬間の特徴" },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "layer5_core_beliefs": {
+          "type": "object",
+          "description": "コア・ビリーフ（根源的信念）",
+          "properties": {
+            "world_assumptions": { "type": "array", "items": { "type": "string" }, "description": "「世界はこういうものだ」" },
+            "self_imperatives": { "type": "array", "items": { "type": "string" }, "description": "「自分はこうあるべきだ」" },
+            "other_assumptions": { "type": "array", "items": { "type": "string" }, "description": "他人に対する前提条件" },
+            "formation_hypotheses": { "type": "array", "items": { "type": "string" }, "description": "それが形成された背景の推測" },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "layer6_internal_contradictions": {
+          "type": "object",
+          "description": "内的矛盾と自己欺瞞",
+          "properties": {
+            "say_do_gaps": { "type": "array", "items": { "type": "string" }, "description": "言っていることと行動のズレ" },
+            "ideal_vs_real": { "type": "array", "items": { "type": "string" }, "description": "理想と本音の衝突点" },
+            "self_deceptions": { "type": "array", "items": { "type": "string" }, "description": "自分に対してついている嘘" },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "layer7_life_script": {
+          "type": "object",
+          "description": "人生のライフスクリプト",
+          "properties": {
+            "unconscious_patterns": { "type": "array", "items": { "type": "string" }, "description": "無意識に辿ろうとしている人生パターン" },
+            "recurring_roles": { "type": "array", "items": { "type": "string" }, "description": "繰り返し選んでしまう役割・状況" },
+            "projected_future": { "type": "string", "description": "放置すると再生産される未来像" },
+            "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "synthesis": {
+          "type": "object",
+          "description": "分析の総括",
+          "properties": {
+            "greatest_strength": { "type": "string" },
+            "greatest_blind_spot": { "type": "string" },
+            "critical_growth_point": { "type": "string" }
+          }
+        },
+        "verification_status": {
+          "type": "object",
+          "description": "各層の検証状態",
+          "properties": {
+            "verified_layers": { "type": "array", "items": { "type": "integer" }, "description": "ユーザーが確認済みの層（1-7）" },
+            "disputed_points": { "type": "array", "items": { "type": "string" }, "description": "ユーザーが異議を唱えた点" }
           }
         }
       }
